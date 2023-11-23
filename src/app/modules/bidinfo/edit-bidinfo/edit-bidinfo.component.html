@@ -1,0 +1,159 @@
+<div class="p-3" *ngIf="bidInfoDetails != null">
+    <!-- header  -->
+    <mat-card class="card flex items-center justify-between w-full">
+        <div class="font-bold text-lg flex flex-col items-start">
+            <p>Bid info details</p>
+            <div *ngIf="bidInfoDetails.activeStatus" class="flex items-center justify-center pl-3 pr-3 pt-1 pb-1 rounded-full leading-normal text-green-500 bg-green-100 dark:text-green-300 dark:bg-green-700 ng-star-inserted" mat-flat-button>
+                <span class="text-sm font-medium whitespace-nowrap">Active</span>
+            </div>
+            <div *ngIf="!bidInfoDetails.activeStatus" class="flex items-center justify-center pl-3 pr-3 pt-1 pb-1 rounded-full leading-normal text-red-500 bg-red-100 dark:text-red-300 dark:bg-red-700 ng-star-inserted" mat-flat-button>
+                <span class="text-sm font-medium whitespace-nowrap">Closed</span>
+            </div>
+        </div>
+
+        <div class="flex">
+            <a class="ml-2" mat-icon-button (click)="changDisplayMode()">
+                <mat-icon *ngIf="!isEditable" matTooltip="Edit" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                <mat-icon *ngIf="isEditable" matTooltip="View" [svgIcon]="'heroicons_outline:eye'"></mat-icon>
+            </a>
+            <!-- Cancel button -->
+            <a class="ml-2" mat-icon-button (click)="closeDrawer()" matTooltip="Cancel">
+                <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+            </a>
+        </div>
+    </mat-card>
+
+    <form [formGroup]="bidInfoEditDetailsForm">
+        <div class="grid grid-cols-2 gap-2 pt-2">
+            <div class="flex">
+                <p class="font-bold">Order Number : </p>
+                <p class="pl-2">{{ bidInfoDetails.orderNo }}</p>
+            </div>
+            <div class="flex">
+                <p class="font-bold">Position Number : </p>
+                <p class="pl-2">{{ bidInfoDetails.positionNo }}</p>
+            </div>
+            <div class="flex">
+                <p class="font-bold">Profile Sumitted : </p>
+                <p class="pl-2">{{ bidInfoDetails.bidName }}</p>
+            </div>
+            <div class="flex">
+                <p class="font-bold">Bid Status :</p>
+                <p class="pl-2">{{ bidInfoDetails.bidStatus }}</p>
+            </div>
+            <div class="flex col-span-2">
+                <p class="font-bold">Bid Received Date :</p>
+                <p class="pl-2">
+                    {{ bidInfoDetails.bidRcvdDate | date : "mediumDate" }}
+                </p>
+            </div>
+
+            <!-- Editing disabled -->
+
+            <div class="flex" *ngIf="!isEditable">
+                <p class="font-bold">Bid Rate :</p>
+                <p class="pl-2">{{ bidInfoDetails.bidRate }}</p>
+            </div>
+            <div class="flex" *ngIf="!isEditable">
+                <p class="font-bold">Over target :</p>
+                <p class="pl-2">{{ bidInfoDetails.overTarget }}</p>
+            </div>
+            <div class="flex" *ngIf="!isEditable">
+                <p class="font-bold">Interview date :</p>
+                <p class="pl-2">
+                    {{ bidInfoDetails.interviewDate | date : "mediumDate" }}
+                </p>
+            </div>
+            <div class="flex" *ngIf="!isEditable && bidInfoDetails.interviewDate != null">
+                <p class="font-bold">Interview result : </p>
+                <p class="pl-2">{{bidInfoDetails.interviewResult }}</p>
+            </div>
+            <div class="flex" *ngIf="!isEditable && bidInfoDetails.interviewResult == 'Tech Reject'">
+                <p class="font-bold">Declined date :</p>
+                <p class="pl-2">
+                    {{ bidInfoDetails.declinedDate | date : "mediumDate" }}
+                </p>
+            </div>
+            <div class="flex" *ngIf="!isEditable && bidInfoDetails.interviewResult == 'Tech Reject'">
+                <p class="font-bold">Declined code :</p>
+                <p class="pl-2">{{ bidInfoDetails.declinedCode }}</p>
+            </div>
+            <div class="flex col-span-2" *ngIf="!isEditable && bidInfoDetails.interviewResult == 'Tech Reject'">
+                <p class="font-bold">Declined reason :</p>
+                <p class="pl-2">{{ bidInfoDetails.declinedReason }}</p>
+            </div>
+
+            <div class="flex" *ngIf="!isEditable && bidInfoDetails.interviewResult == 'Shortlisted'">
+                <p class="font-bold">PO Number :</p>
+                <p class="pl-2">{{ bidInfoDetails.poNo }}</p>
+            </div>
+            <!-- Editing enabled  -->
+            <!-- Bid Rate  -->
+            <mat-form-field *ngIf="isEditable" appearance="outline">
+                <mat-label>Bid Rate</mat-label>
+                <input type="number" matInput formControlName="bidRate" placeholder="Enter bid rate" />
+            </mat-form-field>
+
+            <!-- Over Target  -->
+            <mat-form-field *ngIf="isEditable" appearance="outline">
+                <mat-label>Over Target</mat-label>
+                <mat-select formControlName="overTarget" [errorStateMatcher]="matcher">
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="No">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- InterView Date -->
+            <mat-form-field *ngIf="isEditable" appearance="outline">
+                <mat-label>Interview Date</mat-label>
+                <input matInput [matDatepicker]="picker" placeholder="Choose date" formControlName="interviewDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <!-- Interview Result -->
+            <mat-form-field *ngIf="isEditable && bidInfoEditDetailsForm.value.interviewDate != ''" appearance="outline">
+                <mat-label>Interview result</mat-label>
+                <mat-select formControlName="interviewResult" [errorStateMatcher]="matcher">
+                    <mat-option value="Shortlisted">Shortlisted </mat-option>
+                    <mat-option value="Feedback Pending">Feedback Pending </mat-option>
+                    <mat-option value="Interview Cancelled">Interview Cancelled</mat-option>
+                    <mat-option value="Tech Reject">Tech Reject </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Declined Date -->
+            <mat-form-field *ngIf="isEditable && bidInfoEditDetailsForm.value.interviewResult == 'Tech Reject' && bidInfoEditDetailsForm.value.interviewResult !=null" appearance="outline">
+                <mat-label>Declined Date</mat-label>
+                <input matInput [matDatepicker]="picker" placeholder="Choose date" formControlName="declinedDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <!-- Declined Code -->
+            <mat-form-field *ngIf="isEditable && bidInfoEditDetailsForm.value.interviewResult == 'Tech Reject' && bidInfoEditDetailsForm.value.interviewResult !=null " appearance="outline">
+                <mat-label>Declined Code</mat-label>
+                <input type="text" matInput formControlName="declinedCode" placeholder="Enter declined code" />
+            </mat-form-field>
+
+
+            <!-- Declined Reason -->
+            <mat-form-field class="col-span-2" *ngIf="isEditable && bidInfoEditDetailsForm.value.interviewResult == 'Tech Reject' && bidInfoEditDetailsForm.value.interviewResult !=null" appearance="outline">
+                <mat-label>Declined Reason</mat-label>
+                <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="6" formControlName="declinedReason" placeholder="Enter declined reason"></textarea>
+            </mat-form-field>
+
+            <!-- PO Number -->
+            <mat-form-field *ngIf="isEditable && this.bidInfoEditDetailsForm.value.interviewResult == 'Shortlisted'" appearance="outline">
+                <mat-label>PO Number</mat-label>
+                <input type="number" matInput formControlName="poNo" placeholder="Enter PO number" />
+            </mat-form-field>
+        </div>
+        <div *ngIf="isEditable" class="flex flex-row justify-end items-center">
+            <button class="m-3" mat-stroked-button (click)="changDisplayMode()">
+        <span class="ml-2 mr-1">Cancel</span>
+      </button>
+            <button *ngIf="isEditable" (click)="saveBidInfoDetails()" type="submit" class="text-white bg-[#1e293b] mr-2" mat-flat-button color="success">
+        <span class="ml-2 mr-1">Save</span>
+      </button>
+        </div>
+    </form>
+</div>

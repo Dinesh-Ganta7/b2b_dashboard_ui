@@ -1,0 +1,55 @@
+<div class="flex flex-col mt-2 flex-auto min-w-0">
+  <!-- <button
+    class="mr-3"
+    mat-flat-button
+    [color]="'primary'"
+    (click)="show('alertBox3')"
+  >
+    Show alert boxes
+  </button> -->
+  <!-- <fuse-alert
+    [appearance]="'soft'"
+    [dismissible]="true"
+    [dismissed]="false"
+    [name]="'alertBox3'"
+    [type]="'success'"
+  >
+    Your subscription model is successfully upgraded to the <b>Lifetime Pro</b>.
+  </fuse-alert> -->
+  <!-- Header -->
+  <div
+    class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pl-6 pr-6 sm:px-10 border-b bg-card dark:bg-transparent"
+  >
+    <div class="flex-1 min-w-0">
+      <!-- Title -->
+      <div class="mt-2 mb-2">
+        <h2
+          class="text-2xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10"
+        >
+          Uploads
+        </h2>
+      </div>
+    </div>
+    <div class="flex-auto flex justify-end mt-2 pl-6 pr-6 sm:pl-10 sm:pr-10">
+      <div class="flex mr-2">
+        <div class="flex ml-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Uploads</mat-label>
+            <mat-select [formControl]="selectFilter">
+              <mat-option value="pdfupload"> PDF Upload </mat-option>
+              <mat-option value="excelupload">Excel Upload</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div [ngSwitch]="selectFilter.value">
+    <div *ngSwitchCase="'pdfupload'">
+      <app-pdfupload></app-pdfupload>
+    </div>
+    <div *ngSwitchCase="'excelupload'">
+      <app-excelupload></app-excelupload>
+    </div>
+  </div>
+</div>

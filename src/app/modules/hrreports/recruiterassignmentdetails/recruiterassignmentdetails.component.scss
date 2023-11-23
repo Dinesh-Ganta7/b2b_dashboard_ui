@@ -1,0 +1,19 @@
+table {
+  width: 100%;
+}
+
+th {
+  color: white !important;
+  font-size: 13px;
+  background-color: #1e293b;
+  padding: 10px;
+}
+
+::ng-deep .mat-focused {
+  border-color: #1e293b;
+}
+
+::ng-deep .search-bar {
+  margin-top: -116px;
+  margin-right: 200px;
+}

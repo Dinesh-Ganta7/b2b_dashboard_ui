@@ -1,0 +1,51 @@
+p {
+    // font-size: 15px;
+    margin: 3px;
+}
+
+.mat-flat-button {
+    color: white !important;
+    background-color: #1e293b !important;
+}
+
+.example-full-width {
+    width: 100%;
+    color: black
+}
+.open-status{
+    border : 1px solid grey;
+    margin : 300px;
+    padding: 300px;
+    background-color: blue;
+    color : white
+}
+
+.close-status{
+    border : 1px solid grey;
+
+    background-color: grey;
+    color : black
+}
+.example-radio-button {
+    margin: 0 5px;
+}
+
+//   .mat-radio-button {
+//   }
+//   ::ng-deep .font_bold {
+//     font-weight: 700 !important;
+// }
+::ng-deep .mat-form-field-label {
+    color: rgb(15, 15, 15) !important;
+    font-weight: 500 !important;
+    caret-color: #1e293b !important;
+}
+
+.detail {
+    font-size: 12px;
+    padding-top: 3px
+}
+.button {
+    color: white !important;
+    background-color: #1e293b!important;
+}

@@ -1,0 +1,517 @@
+<div class="flex flex-col flex-auto" *ngIf="positionsDetails != null">
+    <!-- Header -->
+    <!-- <mat-card class="card flex items-center justify-between  sticky top-0" > -->
+    <mat-card class="card flex items-center justify-between">
+        <!-- <div class="flex flex-row justify-between">  -->
+            <div class="flex flex-col">
+                <div class="flex flex-row">
+                    <div>
+                        <p class="font-bold">Order No:</p>
+                    </div>
+                    <div>
+                        <p class="detail">{{ positionsDetails.orderNo }}</p>
+                    </div>
+                </div>
+                <div class="flex flex-row">
+                   
+                    <div>
+                        <ng-container *ngIf="positionsDetails.status; else temp">
+                            <div class="flex items-center justify-center py-1 px-3 mr-3 rounded-full leading-normal text-green-500 bg-green-100 dark:text-green-300 dark:bg-green-700 ng-star-inserted" mat-flat-button>
+                                 <span class="text-sm font-medium whitespace-nowrap">Open</span>
+                            </div>
+                            <!-- close-status <mat-icon [matTooltip]="'Open Position'" svgIcon="heroicons_solid:check-circle" class="text-green-500"></mat-icon> -->
+                        </ng-container>
+                        <ng-template #temp>
+                            <div class="flex items-center justify-center py-1 px-3 mr-3  rounded-full leading-normal text-red-500 bg-red-100 dark:text-red-300 dark:bg-red-700 ng-star-inserted" mat-flat-button>
+                                <span class="text-sm font-medium whitespace-nowrap">Closed</span>
+                           </div>
+                            <!-- <mat-icon svgIcon="heroicons_solid:x-circle" [matTooltip]="'Closed Position'" class="text-red-500"></mat-icon> -->
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+       
+        <!-- </div> -->
+        <div class="flex items-center">
+            <!-- Edit Toggle *ngIf="positionsDetails.activeStatus"-->
+            <a mat-icon-button (click)="toggleEditMode()">
+                <mat-icon *ngIf="!isEditable" matTooltip="Edit" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                <mat-icon *ngIf="isEditable" matTooltip="View" [svgIcon]="'heroicons_outline:eye'"></mat-icon>
+            </a>
+            <!-- Close button -->
+            <a mat-icon-button (click)="closeDrawer()" [matTooltip]="'Close'">
+                <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+            </a>
+        </div>
+    </mat-card>
+    <!-- <mat-divider class="mt-3 mb-3"></mat-divider> -->
+    <form class="flex flex-col flex-auto overflow-y-auto m-3" [formGroup]="jobDetailsForm">
+        <!-- Title -->
+        <div class="grid lg:grid-cols-2 gap-2 md:grid-cols-2 gap-2 sm:grid-cols-1">
+          
+
+            <div class="flex flex-row">
+                <div>
+                    <p class="font-bold">Broadcasted Date:</p>
+                </div>
+                <!-- <div><p class="detail">Apr 8, 2022</p></div> -->
+                <div>
+                    <p class="detail">
+                        {{ positionsDetails.broadcastDate | date : "mediumDate" }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.stratification !== null">
+                <div>
+                    <p class="font-bold">Stratification:</p>
+                </div>
+                <!-- <div><p class="detail">Designer Consultant</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.stratification }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.targetRate !== null">
+                <div>
+                    <p class="font-bold">Target Rate:</p>
+                </div>
+                <!-- <div><p class="detail">100</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.targetRate }}</p>
+                </div>
+            </div>
+
+            <!-- <div class="flex flex-row">
+                <div> <p class="font-bold"> Position Open Month: </p> </div>
+                <div> <p class="detail"> {{positionsDetails.positionMonth}}</p> </div>
+            </div> -->
+
+            <div class="flex flex-row" *ngIf="positionsDetails.primarySkill !== null">
+                <div>
+                    <p class="font-bold">Primary Skill :</p>
+                </div>
+                <!-- <div><p class="detail">Agile Coach</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.primarySkill }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1">
+            <div class="flex flex-row" *ngIf="positionsDetails.skillSet !== null">
+                <div>
+                    <p class="font-bold">SkillSet:</p>
+                    <div>
+                        <p class="detail">
+                            <span *ngIf="
+                  positionsDetails.skillSet &&
+                  positionsDetails.skillSet.length >= 30 &&
+                  expandSkillset == false
+                ">
+                {{ positionsDetails.skillSet.substr(0, 300) }}
+                <span
+                  style="
+                    color: blue;
+                    text-decoration: underline;
+                    cursor: pointer;
+                  "
+                  (click)="toggleSkillSetText()"
+                  *ngIf="positionsDetails.skillSet.length >= 300"
+                  >{{ expandSkillset ? "Read Less" : "Read More" }}</span
+                >
+              </span>
+                            <span *ngIf="expandSkillset == true">
+                {{ positionsDetails.skillSet }}
+                <span
+                  style="
+                    color: blue;
+                    text-decoration: underline;
+                    cursor: pointer;
+                  "
+                  (click)="toggleSkillSetText()"
+                  >{{ expandSkillset ? "Read Less" : "Read More" }}</span
+                >
+              </span>
+                            <!-- <span *ngIf="expanded == false">{{skillSet.substr(0, 25)}}</span> -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.jobDescription !== null">
+                <div>
+                    <p class="font-bold">Job Description:</p>
+                    <div>
+                        <p class="detail">
+                            <span *ngIf="
+                  positionsDetails.jobDescription &&
+                  positionsDetails.jobDescription.length >= 30 &&
+                  expandJd == false
+                ">
+                {{ positionsDetails.jobDescription.substr(0, 300) }}
+                <span
+                  style="
+                    color: blue;
+                    text-decoration: underline;
+                    cursor: pointer;
+                  "
+                  *ngIf="positionsDetails.jobDescription.length >= 300"
+                  (click)="toggleJDText()"
+                  >{{ expandJd ? "Read Less" : "Read More" }}</span
+                >
+              </span>
+                            <span *ngIf="expandJd == true">
+                {{ positionsDetails.jobDescription }}
+                <span
+                  style="
+                    color: blue;
+                    text-decoration: underline;
+                    cursor: pointer;
+                  "
+                  (click)="toggleJDText()"
+                  >{{ expandJd ? "Read Less" : "Read More" }}</span
+                >
+              </span>
+                            <!-- <span *ngIf="expanded == false">{{skillSet.substr(0, 25)}}</span> -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <!-- Editing disabled -->
+        <div class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1" *ngIf="!isEditable">
+            <div class="flex flex-row" *ngIf="positionsDetails.recruiter !== null">
+                <div>
+                    <p class="font-bold">Recruiter:</p>
+                </div>
+                <!-- <div><p class="detail">Prem</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.recruiter }}</p>
+                </div>
+            </div>
+            <div class="flex flex-row" *ngIf="positionsDetails.skillGroup !== null">
+                <div>
+                    <p class="font-bold">Skill Group:</p>
+                </div>
+                <!-- <div><p class="detail">Agile Coach</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.skillGroup }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.positionType !== null">
+                <div>
+                    <p class="font-bold">Position Type:</p>
+                </div>
+                <!-- <div><p class="detail">Dont know</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.positionType }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.didCustomerReachedOut !== null">
+                <div>
+                    <p class="font-bold">Did Customer Reached Out:</p>
+                </div>
+                <!-- <div><p class="detail">Yes</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.didCustomerReachedOut }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.probability !== null">
+                <div>
+                    <p class="font-bold">Probability:</p>
+                </div>
+                <!-- <div><p class="detail">45%</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.probability  }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.submittedAboveTarget !== null">
+                <div>
+                    <p class="font-bold">Submitted Above Target:</p>
+                </div>
+                <!-- <div><p class="detail">Yes</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.submittedAboveTarget }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="(positionsDetails.region && positionsDetails.region.length > 0)">
+                <div>
+                    <p class="font-bold">Region :</p>
+                </div>
+                <!-- <div><p class="detail">EU</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.region }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="(positionsDetails.lineOfBusiness && positionsDetails.lineOfBusiness.length > 0)">
+                <div>
+                    <p class="font-bold">Line Of Business :</p>
+                </div>
+                <!-- <div><p class="detail">Ford Blue</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.lineOfBusiness }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="(positionsDetails.product && positionsDetails.product.length > 0)">
+                <div>
+                    <p class="font-bold">Product Line :</p>
+                </div>
+                <!-- <div><p class="detail">0</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.product }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="(positionsDetails.manager && positionsDetails.manager.length > 0)">
+                <div>
+                    <p class="font-bold">LL6 :</p>
+                </div>
+                <!-- <div><p class="detail">Ravikiran Manchi Saraf</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.manager }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="(positionsDetails.ll5 && positionsDetails.ll5.length > 0)">
+                <div>
+                    <p class="font-bold">LL5 :</p>
+                </div>
+                <!-- <div><p class="detail">Amy Palazz</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.ll5 }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.ll4 !== null">
+                <div>
+                    <p class="font-bold">LL4 :</p>
+                </div>
+                <!-- <div><p class="detail">Aaron Rajda</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.ll4 }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.ll3 !== null">
+                <div>
+                    <p class="font-bold">LL3 :</p>
+                </div>
+                <!-- <div><p class="detail">Aaron Rajda</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.ll3 }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row" *ngIf="positionsDetails.ll2 !== null">
+                <div>
+                    <p class="font-bold">LL2 :</p>
+                </div>
+                <!-- <div><p class="detail">Aaron Rajda</p></div> -->
+                <div>
+                    <p class="detail">{{ positionsDetails.ll2 }}</p>
+                </div>
+            </div>
+
+           
+        </div>
+
+        <!-- Editing enabled  -->
+        <div *ngIf="isEditable">
+            <div class="grid lg:grid-cols-2 gap-2 md:grid-cols-2 gap-2 sm:grid-cols-1">
+                <div class="flex flex-row">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">Recruiter</mat-label>
+                        <mat-select formControlName="recruiter" required>
+                            <mat-option *ngFor="let recruiter of recruiterList" value="{{ recruiter.givenName }}">{{ recruiter.givenName }}</mat-option>
+
+                            <!-- <mat-option value="Vinod"> Vinod </mat-option>
+                            <mat-option value="Prem">Prem</mat-option>
+                            <mat-option value="Archit"> Archit </mat-option>
+                            <mat-option value="Venkat"> Venkat </mat-option>
+                            <mat-option value="Srishti"> Srishti </mat-option>
+                            <mat-option value="Not_Sourcing">Not-Sourcing</mat-option> -->
+                            <!-- <mat-option> Add New</mat-option> -->
+                            <!-- <mat-option value="two">	Paternity Leave </mat-option> (click)="reset1()" -->
+                        </mat-select>
+                        <!-- <mat-error >Type is required</mat-error> -->
+                    </mat-form-field>
+                </div>
+                <!--positionType-->
+                <div class="col-6 flex flex-row">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">Position Type</mat-label>
+                        <mat-select formControlName="positionType" >
+                            <mat-option *ngFor="let positionType of positionTypesList" value={{positionType.masterFieldId}}>{{positionType.fieldName}}</mat-option>
+
+                            <!-- <mat-option value="New"> New </mat-option>
+                            <mat-option value="Backfill">Backfill</mat-option>
+                            <mat-option value="Not Known"> Not Known </mat-option> -->
+                        </mat-select>
+                        <!-- <input formControlName="positionType" matInput [type]="'positionType'" /> -->
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="grid lg:grid-cols-3 gap-2 md:grid-cols-2 gap-2 sm:grid-cols-1">
+                <div class="flex flex-row">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">Skill Group</mat-label>
+                        <input formControlName="skillGroup" matInput type="text" />
+                        <!-- <mat-error *ngIf="!addForm.controls['firstName'].valid">
+                          FirstName is required
+                            </mat-error> -->
+                    </mat-form-field>
+                </div>
+                <!--region-->
+                <div>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">Region</mat-label>
+                        <mat-select formControlName="region" >
+                            <mat-option *ngFor="let region of regioncodeList" required value={{region.masterFieldId}}>{{region.fieldName}}</mat-option>
+                            <!-- <mat-option (click)=a ddNewRegion()>Add new</mat-option> -->
+
+                            <!-- <mat-option [value]="'Other'">Other</mat-option> -->
+                            <!-- (selectionChange)="onSelect()" -->
+                            <!-- <mat-option value="NA"> NA </mat-option>
+                            <mat-option value="EU">EU</mat-option>
+                            <mat-option value="AP">AP</mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <mat-form-field class="example-full-width" appearance="outline">
+                        <input matInput *ngIf="showOther" formControlName="otherOption" />
+                    </mat-form-field> -->
+                </div>
+                <!--probability-->
+                <div class="col-6 flex flex-row">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">Probability</mat-label>
+                        <input formControlName="probability" matInput type="number" min=0 max=100/>
+                        <mat-error *ngIf="jobDetailsForm.controls['probability'].invalid">
+                          Range 0 - 100 only
+                            </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-2 md:grid-cols-2 gap-2 sm:grid-cols-1">
+                <!--didCustomerReachOut-->
+                <div class="mt-1 mb-3">
+                    <!-- <mat-form-field class="example-full-width"  formControlName="didCustomerReachedOut"> -->
+                    <mat-label class="text-sm">Did Customer Reached Out :</mat-label>
+                    <mat-radio-group class="example-full-width flex flex-row" formControlName="didCustomerReachedOut">
+                        <mat-radio-button class="example-radio-button" value="Yes">Yes</mat-radio-button>
+                        <mat-radio-button class="example-radio-button" value="No">No</mat-radio-button>
+                    </mat-radio-group>
+                    <!-- <mat-select formControlName="didCustomerReachedOut">
+                            <mat-option value="Yes"> Yes </mat-option>
+                            <mat-option value="No">No</mat-option>
+                        </mat-select> -->
+                    <!-- <mat-error >Type is required</mat-error> -->
+                    <!-- </mat-form-field> -->
+                </div>
+                <!--submittedAboveTarget-->
+                <div class="mt-1 mb-3">
+                    <!-- <mat-form-field class="example-full-width" appearance="outline"> -->
+                    <mat-label class="text-sm">Submitted Above Target :</mat-label>
+                    <mat-radio-group class="example-full-width flex flex-row" formControlName="submittedAboveTarget">
+                        <mat-radio-button class="example-radio-button" value="Yes">Yes</mat-radio-button>
+                        <mat-radio-button class="example-radio-button" value="No">No</mat-radio-button>
+                    </mat-radio-group>
+                  
+                </div>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-2 md:grid-cols-2 gap-2 sm:grid-cols-1">
+                <div>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">Line Of Business</mat-label>
+                        <mat-select formControlName="lineOfBusiness"  (selectionChange) = onBuChange()>
+                            <mat-option *ngFor="let bu of businessUnitList" required value={{bu.masterFieldId}}>{{bu.fieldName}}</mat-option>
+                            <!-- <mat-option value="Ford Blue"> Ford Blue </mat-option>-->
+                            <!-- <mat-option value="Ford Credit">Ford Credit </mat-option>
+                            <mat-option value="Ford Pass"> Ford Pass </mat-option> -->
+                            <!--<mat-option value="Ford Next"> Ford Next </mat-option>
+                            <mat-option value="Ford Pro"> Ford Pro </mat-option>
+                            <mat-option value="Model E">Model E</mat-option> -->
+                        </mat-select>
+                        <!-- <mat-error >Type is required</mat-error> -->
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">Product Line</mat-label>
+                        <mat-select formControlName="product" >
+                            <mat-option *ngFor="let productList of productLineList" value={{productList.masterValueId}}>{{productList.fieldValue}}</mat-option>
+                            <!-- <mat-option *ngFor="let productList of productLineList" value=productList>{{productList}}</mat-option> -->
+                            
+                            <!-- <mat-option value="1"> GVMS </mat-option>
+                            <mat-option value="2">OTA </mat-option>
+                            <mat-option value="3">GIVIS </mat-option> -->
+                        </mat-select>
+                        <!-- <input formControlName="productLine" matInput [type]="'productLine'" required /> -->
+                        <!-- <mat-error *ngIf="!addForm.controls['firstName'].valid">
+                          FirstName is required
+                            </mat-error> -->
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">LL6</mat-label>
+                        <mat-select   formControlName="manager" (selectionChange)="onDropdownChange()">
+                            <mat-option *ngFor="let manager of managerList" value={{manager.masterFieldId}}>{{manager.fieldName}}</mat-option>
+                            <!-- <mat-option value="7">Sridhar Ramachandaran</mat-option>
+                            <mat-option value="8">Abhijith Mathewes</mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div *ngIf="jobDetailsForm.value.manager != ''">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">LL5</mat-label>
+                        <input formControlName="ll5" matInput type="text" />
+                    </mat-form-field>
+                </div>
+
+                <div *ngIf="jobDetailsForm.value.manager != ''">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">LL4</mat-label>
+                        <input formControlName="ll4"  matInput type="text" />
+                    </mat-form-field>
+                </div>
+
+                <div *ngIf="jobDetailsForm.value.manager != ''">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">LL3</mat-label>
+                        <input formControlName="ll3" matInput   type="text" />
+                    </mat-form-field>
+                </div>
+
+                <div *ngIf="jobDetailsForm.value.manager != ''">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label class="text-sm">LL2</mat-label>
+                        <input formControlName="ll2" matInput   type="text" />
+                    </mat-form-field>
+                </div>
+               
+            </div>
+            <div class="button-wrapper flex flex-row justify-end">
+                <button class="m-3" mat-stroked-button (click)="cancelChanges()">
+          <!-- <mat-icon ></mat-icon> -->
+          <span class="ml-2 mr-1">Cancel</span>
+        </button>
+                <button class="text-white bg-[#1e293b] m-3" mat-flat-button [disabled]="jobDetailsForm.invalid" (click)="submitDetails()">
+          <!-- <mat-icon ></mat-icon> -->
+          <span class="ml-2 mr-1">Save</span>
+        </button>
+            </div>
+        </div>
+    </form>
+</div>

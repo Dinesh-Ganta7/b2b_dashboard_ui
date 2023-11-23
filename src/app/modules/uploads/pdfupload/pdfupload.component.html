@@ -1,0 +1,88 @@
+<div class="flex flex-col justify-center p-6">
+  <div>
+    <h2
+      class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 font-sans"
+    >
+      PDF Uploads
+    </h2>
+  </div>
+
+  <div class="flex flex-row">
+    <ng-container>
+      <input
+        type="file"
+        id="file"
+        class="file-input"
+        accept="application/pdf"
+        multiple
+        (change)="getFileDetails($event)"
+        #fileUpload
+      />
+      <div class="flex flex-row justify-center">
+        <button
+          mat-button
+          id="upload"
+          (click)="fileUpload.click()"
+          class="bg-sky-900 max-w-56 self-center text-white rounded-full mr-4"
+        >
+          Select files
+
+          <mat-icon
+            class="text-white"
+            [svgIcon]="'heroicons_solid:upload'"
+          ></mat-icon>
+        </button>
+
+      </div>
+
+      <div class="flex flex-row justify-center p-6">
+        <button
+          mat-button
+          id="upload"
+          class="bg-sky-900 max-w-56 self-center text-white rounded-full mr-4"
+          (click)="uploadFiles()"
+        >
+          upload
+        </button>
+        <button
+          mat-button
+          class="bg-neutral-400 max-w-56 self-center text-white rounded-full mr-4"
+          (click)="resetButton()"
+        >
+          reset
+        </button>
+      </div>
+    </ng-container>
+    
+  </div>
+
+  <div class="grid grid-rows-2 grid-flow-col gap-4">
+    <div *ngFor="let file of files" class="flex felx-col">
+      <div class="flex flex-row">
+        <div
+          class="mb-2 flex flex-row self-center justify-center items-center border-solid rounded-lg min-h-10 min-w-56 border-gray-400 border-2"
+          [matTooltip]="file.name"
+        >
+          {{ file.name || "" | truncate : 15 }}
+        </div>
+
+        <button
+          mat-icon-button
+          class="rounded-full ml-4"
+          (click)="removeButton(file)"
+        >
+          <mat-icon [svgIcon]="'heroicons_solid:x'"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <fuse-alert
+  class="mt-8 -mb-4 w-72"
+  *ngIf="showAlert"
+  [appearance]="'outline'"
+  [showIcon]="false"
+  [type]="alert.type"
+  [@zoomIn]="alert.type === 'error'">
+  {{alert.message}}
+</fuse-alert>
+</div>

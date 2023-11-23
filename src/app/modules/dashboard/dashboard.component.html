@@ -1,0 +1,501 @@
+<div class="w-full flex flex-col  justify-center  bg-slate-300">
+
+
+
+    <div class="w-full flex flex-wrap items-center justify-around p-5 grid grid-cols-2 sm:grid-cols-2">
+
+
+        <!-- Jobs Count -->
+        <div
+            class="flex flex-col flex-auto justify-center p-6 bg-card shadow rounded-lg overflow-hidden flex-initial h-60 m-3 m-3">
+
+            <div class="flex flex-col items-center mt-2 p-3">
+                <mat-icon svgIcon="heroicons_outline:users" class="jobs-icon"></mat-icon>
+                <div
+                    class="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight leading-none text-[#1e293b]-200 hover:text-violet-800">
+                    {{jobsCount}}
+                </div>
+                <div class=" text-1.8xl sm:text-2xl  md:text-3xl font-medium text-[#1e293b]-200 dark:text-blue-500">
+                    <strong>Jobs</strong>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Open Positions Summary -->
+
+
+        <div class="overflow-x-auto shadow-md rounded-lg h-60 bg-white  m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]"><strong>Open
+                    Positions
+                    Summary</strong></h1>
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase">
+                    <tr class="text-center">
+                        <th scope="col" class="bg-gray-50  px-6 py-3">
+                            All Open Positions
+                        </th>
+                        <th scope="col" class="bg-gray-50 px-6 py-3">
+                            Total Active Bids
+                        </th>
+                        <th scope="col" class="bg-gray-50  px-6 py-3">
+                            Positions
+                        </th>
+                        <th scope="col" class="bg-gray-50  px-6 py-3">
+                            Not Sourcing
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.allOpenPositions}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.totalActiveBids}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.positions}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.notSourcing}}
+                        </td>
+
+                    </tr>
+                </tbody>
+
+                <thead class="text-xs text-gray-700 uppercase">
+
+                    <tr class="text-center">
+                        <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                            Today
+                        </th>
+                        <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                            This Week (Mon-Fri)
+                        </th>
+                        <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                            This Month
+                        </th>
+                        <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                            Previous Month
+                        </th>
+
+                    </tr>
+
+
+                </thead>
+
+                <tbody>
+
+                    <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.today}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.thisWeek}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.thisMonth}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{openPositionsSummaryDatasource.previousMonth}}
+                        </td>
+                    </tr>
+
+
+
+
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <!-- Position Closure Summary -->
+        <!-- <div class="overflow-x-auto shadow-md rounded-lg h-60 bg-white m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]">
+                <strong>Position Closure
+                    Summary</strong>
+            </h1>
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase">
+                    <tr class="text-center">
+                        <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                            Month
+                        </th>
+                        <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                            MSXI
+                        </th>
+                        <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                            Input Services
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let data of positionClosureSummaryDatasource">
+                    <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                        <th class="px-6 py-4">
+                            {{data.month}}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{data.msxi}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{data.inputServices}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
+
+    </div>
+
+
+
+    <div class="w-full flex flex-wrap items-center justify-around p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+
+
+
+
+
+
+
+
+
+
+        <!-- Bid Submission Summary -->
+        <div class="overflow-x-auto shadow-md rounded-lg h-60 bg-white  m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]"><strong>Bid
+                    Submission
+                    Summary</strong></h1>
+
+            <div class="text-600 text-center text-gray-700 uppercase mt-20"
+                *ngIf="(bidSubmissionSummaryDatasource.length === 0) else showData0">
+                <strong>NO DATA</strong>
+            </div>
+            <ng-template #showData0>
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase">
+                        <tr class="text-center">
+                            <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                                Today
+                            </th>
+                            <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                                This Week(Mon-Fri)
+                            </th>
+                            <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                                This Month
+                            </th>
+                            <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                                Previous Month
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                            <td class="px-6 py-4">
+                                {{bidSubmissionSummaryDatasource.today}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{bidSubmissionSummaryDatasource.thisWeek}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{bidSubmissionSummaryDatasource.thisMonth}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{bidSubmissionSummaryDatasource.previousMonth}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+
+        </div>
+
+        <!-- Positions -->
+        <div class="overflow-x-auto shadow-md rounded-lg h-60 bg-white  m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]">
+                <strong>Positions</strong>
+            </h1>
+            <div class="text-600 text-center text-gray-700 uppercase mt-20"
+                *ngIf="(openJobsDataSource.length === 0) else showData1">
+                <strong>NO DATA</strong>
+            </div>
+            <ng-template #showData1>
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase">
+                        <tr class="text-center">
+                            <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                                Position Type
+                            </th>
+                            <th scope="col" class="bg-gray-50 sticky top-8 px-6 py-3">
+                                <mat-icon svgIcon="heroicons_outline:briefcase"></mat-icon>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let data of openJobsDataSource">
+                        <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                            <td *ngIf="data.positionType != null else nullPositionType" class="px-6 py-4">
+                                {{data.positionType}}
+                            </td>
+
+                            <ng-template #nullPositionType>
+                                <td class="px-6 py-4">
+                                    -
+                                </td>
+                            </ng-template>
+
+
+                            <td class="px-6 py-4">
+                                {{data.noOfPositions}}
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+
+        </div>
+
+        <!-- Position By Region -->
+        <div class="relative overflow-x-auto shadow-md rounded-lg  bg-white h-60 m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]">
+                <strong>Position by
+                    Region</strong>
+            </h1>
+
+            <div class="text-600 text-center text-gray-700 uppercase mt-20"
+                *ngIf="(openJobsRegionDataSource.length === 0) else showData2">
+                <strong>NO DATA</strong>
+            </div>
+
+            <ng-template #showData2>
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+                    <thead class="text-xs text-gray-700 uppercase">
+                        <tr class="text-center">
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                Region
+                            </th>
+
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                New Positions
+                            </th>
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                Back Fills
+                            </th>
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                Grand Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let data of openJobsRegionDataSource">
+                        <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                            <td *ngIf="data.region != null else nullRegion" class="px-6 py-4">
+                                {{data.region}}
+                            </td>
+                            <ng-template>
+                                <td #nullRegion>
+                                    -
+                                </td>
+                            </ng-template>
+
+
+
+                            <td class="px-6 py-4">
+                                {{data.newPositions}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{data.backfills}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{data.grandTotal}}
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+
+        </div>
+
+        <!-- Position By BU -->
+        <div class="relative overflow-x-auto shadow-md rounded-lg bg-white h-60 m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]">
+                <strong>Position by
+                    BU</strong>
+            </h1>
+
+            <div class="text-600 text-center text-gray-700 uppercase mt-20"
+                *ngIf="(bussinessUnitDataSource.length === 0) else showData3">
+                <strong>NO DATA</strong>
+            </div>
+            <ng-template #showData3>
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+                    <thead class="text-xs text-gray-700 uppercase">
+                        <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                Bussiness Unit
+                            </th>
+
+
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                New Positions
+                            </th>
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                Back Fills
+                            </th>
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                Grand Total
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let data of bussinessUnitDataSource">
+                        <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                            <td *ngIf="data.businessUnit!=null else nullBusinessunit" class="px-6 py-4">
+                                {{data.businessUnit}}
+                            </td>
+                            <ng-template>
+                                <td class="px-6 py-4">
+                                    -
+                                </td>
+                            </ng-template>
+
+                            <td class="px-6 py-4">
+                                {{data.newPositions}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{data.backfills}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{data.grantTotal}}
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+
+
+        </div>
+
+
+        <!-- Position By Skill Group -->
+        <div class="relative overflow-x-auto shadow-md rounded-lg bg-white h-60 m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]">
+                <strong>Position by Skill
+                    Group</strong>
+            </h1>
+
+            <div class="text-600 text-center text-gray-700 uppercase mt-20"
+                *ngIf="(openJobsSkillGroupDataSource.length === 0) else showData4">
+                <strong>NO DATA</strong>
+            </div>
+
+            <ng-template #showData4>
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase">
+                        <tr class="text-center">
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                Skill Group
+                            </th>
+                            <th scope="col" class="sticky top-8 px-6 py-3 bg-gray-50">
+                                <mat-icon>psychology</mat-icon>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let data of openJobsSkillGroupDataSource">
+                        <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                            <td *ngIf="data.skillGroup!=null else nullSkillGroup" class="px-6 py-4">
+                                {{data.skillGroup}}
+                            </td>
+
+                            <ng-template #nullSkillGroup>
+                                <td class="px-6 py-4">
+                                    -
+                                </td>
+                            </ng-template>
+
+                            <td *ngIf="data.sumOFNoOfPositions!=null else nullSkillGroup"  class="px-6 py-4">
+                                {{data.sumOFNoOfPositions}}
+                            </td>
+                        
+
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+
+
+        </div>
+
+        <!-- Position By LL3 Org -->
+        <div class="relative overflow-x-auto shadow-md rounded-lg bg-white  h-60 m-3">
+            <h1 class="sticky top-0 left-0 right-0 text-white text-center hover:uppercase p-3 bg-[#1e293b]">
+                <strong>Position by LL3
+                    Org</strong>
+            </h1>
+
+            <div class="text-600 text-center text-gray-700 uppercase mt-20"
+                *ngIf="(openJobsLL3OrgDataSource.length === 0) else showData5">
+                <strong>NO DATA</strong>
+            </div>
+
+            <ng-template #showData5>
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase">
+                        <tr class="text-center">
+                            <th scope="col" class="sticky top-8  px-6 py-3 bg-gray-50">
+                                LL3 Name
+                            </th>
+                            <th scope="col" class=" sticky top-8 px-6 py-3 bg-gray-50">
+                                <mat-icon>person_pin</mat-icon>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let data of openJobsLL3OrgDataSource">
+                        <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                            <td *ngIf="data.ll3Manager != null else nullLL3Manger" class="px-6 py-4">
+                                {{data.ll3Manager}}
+                            </td>
+                            <ng-template #nullLL3Manger>
+                                <td class="px-6 py-4">
+                                    -
+                                </td>
+                            </ng-template>
+
+                            
+                            <td *ngIf="data.noOfPositions != null else nullLL3Manger" class="px-6 py-4">
+                                {{data.noOfPositions}}
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+
+
+        </div>
+
+    </div>
+
+    <!-- <div>
+        <button  (click) = "condition = !condition" class = "bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mb-3">Has Role </button>
+        <p *appHasRole = "condition" class = "bg-blue-500 text-center text-white">Hello World!</p>
+    </div> -->
+
+
+</div>

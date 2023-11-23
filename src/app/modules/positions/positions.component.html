@@ -1,0 +1,325 @@
+<div class="flex flex-col w-full bg-slate-300">
+    <!-- Header -->
+
+    <div class="flex items-center justify-between pt-2 pl-2 pr-2 pb-2 w-full text-3xl font-semibold tracking-tight leading-8">
+        <h2 class="text-3xl font-semibold tracking-tight leading-8 ml-3 mt-2">
+            {{ isChecked ? "Open" : "Closed" }} Positions
+        </h2>
+        <div class="flex flex-row justify-end">
+            <div class="m-2 mt-4 font-medium tracking-tight text-base">
+                <ng-container *ngIf="!isChecked; else closeMsg">Closed </ng-container>
+                <ng-template #closeMsg>Open </ng-template>
+                <mat-slide-toggle class="ml-3 mt-2" [checked]="isChecked" (change)="toggleChanged()"  matTooltipPosition="above" [matTooltip]="isChecked ? 'Close' : 'Open'" [disabled]="isMatDrawerOpend">
+                    <!-- <mat-slide-toggle class="ml-3" (click)="toggleChanged()" [disabled]="isMatDrawerOpend"> -->
+                </mat-slide-toggle>
+            </div>
+            <div>
+                <mat-form-field class="w-44 h-10 m-2">
+                    <input [(ngModel)]="searchTerm" placeholder="Search" matInput (keyup)="filterTable(searchTerm)" />
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <mat-drawer-container class="h-full">
+        <mat-drawer #drawer class="my-drawer" mode="over" position="end" id="drawer" class="w-full sm:w-128 " disableClose>
+            <app-details></app-details>
+        </mat-drawer>
+        <mat-drawer-content>
+            <!-- Main -->
+
+            <!-- No data foud container  -->
+            <mat-card class="m-auto w-9/12 mt-5 pl-5 pr-5 pb-5 flex items-center justify-center" *ngIf="dataSource.data.length == 0 && isLoading == false">
+                <img class="not-found-container" src="../../../assets/images/custom/no-data-found.png" alt="No data found" />
+            </mat-card>
+
+            <div class="mat-elevation-z ml-4 mr-4 mb-4" *ngIf="dataSource.data.length != 0">
+                <div class="container">
+                    <table *ngIf="dataSource.data.length != 0" mat-table class="w-full" matSort [dataSource]="dataSource">
+                        <!-- Order Number Column -->
+
+                        <ng-container matColumnDef="orderNo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Order Number
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.orderNo != null; else temp">
+                                    {{ element.orderNo }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Positions -->
+
+                        <ng-container matColumnDef="positions">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Positions
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.positions != []; else temp">
+                                    {{ element.positions.join(", ") }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- No. of Positions Column -->
+                        <ng-container matColumnDef="noOfPositions">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                No. of Positions
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="(element.noOfPositions != null) ; else temp">
+                                    {{ element.noOfPositions }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Recruiter Column -->
+                        <ng-container matColumnDef="recruiter">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Recruiter
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="(element.recruiter != null) ; else temp">
+                                    {{ element.recruiter }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Position Broadcasted date Column -->
+                        <ng-container matColumnDef="broadcastDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Position Broadcasted date
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.broadcastDate != null; else temp">
+                                    {{ element.broadcastDate | date : "mediumDate" }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Stratification Column -->
+                        <ng-container matColumnDef="stratification">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Stratification
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.stratification != null; else temp">
+                                    {{ element.stratification }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--  Target Rate Column -->
+                        <ng-container matColumnDef="targetRate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Target Rate
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.targetRate != null; else temp">
+                                    {{ element.targetRate }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--  Skill Group Column -->
+                        <ng-container matColumnDef="skillGroup">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Skill Group
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.skillGroup != null; else temp">
+                                    {{ element.skillGroup }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--  Primary Skill Column -->
+                        <ng-container matColumnDef="primarySkill">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Primary Skill
+                            </th>
+                            <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltip="{{ element.primarySkill }}" matTooltipPosition="left">
+                                <ng-container *ngIf="element.primarySkill != null; else temp">
+                                    {{ element.primarySkill | truncate : 50 }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Skill Set Column -->
+                        <ng-container matColumnDef="skillSet">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Skill Set
+                            </th>
+                            <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltip="{{ element.skillSet }}" matTooltipPosition="left">
+                                <ng-container *ngIf="element.skillSet != null; else temp">
+                                    {{ element.skillSet | truncate : 100 }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Job Description Column -->
+                        <ng-container matColumnDef="jobDescription">
+                            <th style="text-align: center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Job Description
+                            </th>
+                            <td mat-cell *matCellDef="let element" #tooltip="matTooltip" matTooltip="{{ element.jobDescription }}" matTooltipPosition="left">
+                                <ng-container *ngIf="element.jobDescription != null; else temp">
+                                    {{ element.jobDescription | truncate : 100 }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+
+                        <!--  Did Customer Reachedout Column -->
+                        <ng-container matColumnDef="didCustomerReachedOut">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Did Customer Reachedout
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.didCustomerReachedOut != null; else temp">
+                                    {{ element.didCustomerReachedOut }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--  Probability Column -->
+                        <ng-container matColumnDef="probability">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Probability
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.probability != null; else temp">
+                                    {{ element.probability }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--   Submitted Above Target Column -->
+                        <ng-container matColumnDef="submittedAboveTarget">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Submitted Above Target
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.submittedAboveTarget != null; else temp">
+                                    {{ element.submittedAboveTarget }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--   Region Column -->
+                        <ng-container matColumnDef="region">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Region</th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="(element.region && element.region.length > 0); else temp">
+                                    {{ element.region }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--   Position Type Column -->
+                        <ng-container matColumnDef="positionType">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Position Type
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="(element.positionType && element.positionType.length > 0); else temp">
+                                    {{ element.positionType }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!--  Line Of Business -->
+                        <ng-container matColumnDef="lineOfBusiness">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Line Of Business
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="(element.lineOfBusiness && element.lineOfBusiness.length > 0); else temp">
+                                    {{ element.lineOfBusiness }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Product Line -->
+                        <ng-container matColumnDef="product">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Product Line
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="(element.product && element.product.length > 0); else temp">
+                                    {{ element.product }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- LL5 Column -->
+                        <ng-container matColumnDef="ll5">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LL5</th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.ll5 != null; else temp">
+                                    {{ element.ll5 }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- LL4 Column -->
+                        <ng-container matColumnDef="ll4">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LL4</th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.ll4 != null; else temp">
+                                    {{ element.ll4 }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+
+                        <!-- LL3 Column -->
+                        <ng-container matColumnDef="ll3">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LL3</th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.ll3 != null; else temp">
+                                    {{ element.ll3 }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+
+                         <!-- LL2 Column -->
+                         <ng-container matColumnDef="ll2">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LL2</th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.ll2 != null; else temp">
+                                    {{ element.ll2 }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+
+                        <!--   Manager Column -->
+                        <ng-container matColumnDef="manager">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>LL6</th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.manager != null; else temp">
+                                    {{ element.manager }}
+                                </ng-container>
+                                <ng-template #temp> - </ng-template>
+                            </td>
+                        </ng-container>
+
+
+                        <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr> -->
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="sticky top-0"></tr>
+
+                        <!-- <ng-container *matRowDef="let row; columns: displayedColumns; ">
+                  <tr mat-row *ngIf="!row.activeStatus" (click)="getDetails(row)"></tr>
+                </ng-container> -->
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="getDetails(row)"></tr>
+                    </table>
+                </div>
+                <mat-paginator *ngIf="dataSource.data.length != 0" [pageSizeOptions]="[10, 20, 50, 100]" aria-label="Select page of position data">
+                </mat-paginator>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

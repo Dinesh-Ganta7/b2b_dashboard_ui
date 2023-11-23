@@ -1,0 +1,166 @@
+<div class="flex flex-col w-full bg-slate-300">
+    <!-- Header -->
+    <div class="flex items-center justify-between pt-2 pl-2 pr-2 pb-4 w-full">
+        <h2 class="text-3xl font-semibold tracking-tight leading-8 pl-2">
+            {{ isChecked ? "Active" : "Closed" }} Bid Information
+        </h2>
+        <div class="flex items-center font-medium tracking-tight text-base">
+            <mat-slide-toggle class="mr-2" [checked]="isChecked" (change)="toggleChanged($event)" [disabled]="isMatDrawerOpend">
+                <ng-container *ngIf="isChecked; else closeMsg">Closed</ng-container>
+                <ng-template #closeMsg> Active</ng-template>
+            </mat-slide-toggle>
+
+            <mat-form-field class="w-44 h-10">
+                <input [disabled]="isMatDrawerOpend" class="ml-2" matInput (keyup)="applyFilter($event)" placeholder="Search" #input />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Bid information table -->
+    <mat-drawer-container class="h-full bg-slate-300">
+        <mat-drawer #drawer class="my-drawer" mode="over" position="end" id="drawer" class="w-full sm:w-128 dark:bg-slate-300" disableClose>
+            <app-edit-bidinfo></app-edit-bidinfo>
+        </mat-drawer>
+        <mat-drawer-content>
+            <!-- Main -->
+            <mat-card class="m-auto w-9/12 mt-5 p-5 flex items-center justify-center bg-card" *ngIf="dataSource.data.length == 0">
+                <img class="not-found-container" src="../../../assets/images/custom/no-data-found.png" alt="No data found" />
+            </mat-card>
+            <div *ngIf="dataSource.data.length != 0" class="mat-elevation-z8 m-4 ">
+                <div class="container">
+                    <table class="w-full" mat-table [dataSource]="dataSource" matSort>
+                        <!-- OrderNumber Column -->
+                        <ng-container matColumnDef="orderNo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Order Number
+                            </th>
+                            <td mat-cell *matCellDef="let row">{{ row.orderNo }}</td>
+                        </ng-container>
+
+                        <!-- Position Number Column -->
+                        <ng-container matColumnDef="positionNo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Position Number
+                            </th>
+                            <td mat-cell *matCellDef="let row">{{ row.positionNo }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Bid Status Column -->
+                        <ng-container matColumnDef="bidStatus">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Bid Status
+                            </th>
+                            <td mat-cell *matCellDef="let row">{{ row.bidStatus }}</td>
+                        </ng-container>
+
+                        <!-- Bid  Bid Recived date Column -->
+                        <ng-container matColumnDef="bidRcvdDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Bid Recived date
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row.bidRcvdDate | date : "mediumDate" }}
+                            </td>
+                        </ng-container>
+
+                        <!-- ProfileSubmitted Column -->
+                        <ng-container matColumnDef="bidName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Profile Submitted
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row.bidName }}
+                            </td>
+                        </ng-container>
+
+                        <!--Over Target Column-->
+                        <ng-container matColumnDef="overTarget">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Over Target
+                            </th>
+                            <td mat-cell *matCellDef="let row">{{ row.overTarget != null && row.overTarget != ''? row.overTarget: '-' }}</td>
+                        </ng-container>
+
+                        <!-- Bid Rate Column -->
+                        <ng-container matColumnDef="bidRate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Bid Rate</th>
+                            <td mat-cell *matCellDef="let row">{{ row.bidRate != null && row.bidRate != '' ? row.bidRate : '' }}</td>
+                        </ng-container>
+
+                        <!-- InterviewDate Column -->
+                        <ng-container matColumnDef="interviewDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Interview Date
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row.interviewDate != null ?(row.interviewDate | date : "mediumDate" ) : '-' }}
+                            </td>
+                        </ng-container>
+
+                        <!-- InterviewResult Column -->
+                        <ng-container matColumnDef="interviewResult">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Interview Result
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                <i *ngIf="row.interviewResult == 'Interview Cancelled'" matTooltip="Interview Cancelled" class="fa-solid fa-calendar-xmark text-lg text-gray-500"></i>
+                                <i *ngIf="row.interviewResult == 'Tech Reject'" matTooltip="Tech Reject" class="fa-solid fa-xmark text-lg text-red-600"></i>
+                                <i *ngIf="row.interviewResult == 'Shortlisted'" matTooltip="Shortlisted" class="fa-solid fa-check text-lg text-green-900"></i>
+                                <i *ngIf="row.interviewResult == 'Feedback Pending'" matTooltip="Feedback Pending" class="fa-solid fa-comment-dots text-lg text-amber-500"></i>
+                                <P *ngIf="row.interviewResult == null || row.interviewResult == ''">-</P>
+                            </td>
+                        </ng-container>
+
+                        <!-- Declined Code Column -->
+                        <ng-container matColumnDef="declinedCode">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Declined Code
+                            </th>
+                            <td mat-cell *matCellDef="let row">{{ row.declinedCode != null && row.declinedCode != '' ? row.declinedCode : '-' }}</td>
+                        </ng-container>
+
+                        <!-- Declined reason Column -->
+                        <ng-container matColumnDef="declinedReason">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Declined Reason
+                            </th>
+                            <td mat-cell *matCellDef="let row" matTooltip="{{row.declinedReason}}">
+                                <!-- {{ row.declinedReason }} -->
+
+                                {{ row.declinedReason != null && row.declinedReason != "" ? (row.declinedReason | truncate :50 ): '-' }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Declined Date Column -->
+                        <ng-container matColumnDef="declinedDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                Declined Date
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row.declinedDate != null && row.declinedDate != ''? (row.declinedDate | date : "mediumDate" ):'-' }}
+                            </td>
+                        </ng-container>
+
+                        <!-- PO Number Column -->
+                        <ng-container matColumnDef="poNo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Number</th>
+                            <td mat-cell *matCellDef="let row">{{ row.poNo != '' && row.poNo != null ? row.poNo : '-' }}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="edit(row)"></tr>
+
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">
+                                No data matching the filter "{{ input.value }}"
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <mat-paginator *ngIf="dataSource.data.length!=0" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

@@ -1,0 +1,67 @@
+/* Upload btn */
+
+.mat-flat-button.mat-blue {
+    color: white;
+    background-color: #1e293b;
+}
+
+th {
+    color: white !important;
+    font-size: 13px;
+    background-color: #1e293b;
+    padding: 10px;
+}
+
+// .mat-cell,
+// .mat-footer-cell {
+//     font-size: 13px;
+//     padding: 8px;
+// }
+.mat-cell,
+.mat-footer-cell {
+    font-size: 13px;
+    // overflow-x: auto;
+    padding: 5px;
+}
+
+.container {
+    max-height: 60vh;
+    overflow: auto;
+}
+
+.not-found-container {
+    width: 50%;
+}
+
+.mat-column-jobDescription,
+.mat-column-skillSet {
+    max-width: 270px !important;
+    min-width: 270px !important;
+    text-align: left !important;
+}
+
+.mat-column-primarySkill {
+    max-width: 100px !important;
+    min-width: 100px !important;
+    text-align: left !important;
+}
+
+tr {
+    cursor: pointer;
+}
+
+::ng-deep td,
+th {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+::ng-deep .mat-drawer-container{
+    background-color: transparent !important;
+}
+
+::ng-deep .mat-drawer-content{
+    padding-left: 1rem Im !important;
+    padding-right: 1rem Im !important;
+    padding-bottom: 1rem Im !important;
+}

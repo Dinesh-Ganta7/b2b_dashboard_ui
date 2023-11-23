@@ -1,0 +1,109 @@
+<div class="pdf-upload " id="pdfBlock" *ngIf = "!isPdfUploaded">
+	<h1 class="font-bold m-2">Pdf Uploads  </h1>
+
+	<div class="container mt-3" appDnd (fileDropped)="onFileDroppedPdf($event)">
+		<div class="flex flex-col items-center " >
+			<div class="text-center"> 
+				<input type="file" #fileDropRef style="cursor: pointer;" id="fileDropRef" multiple (change)="fileBrowseHandlerPdf($event.target.files)" accept=".pdf" />
+				<mat-icon class="upload-icon" svgIcon="heroicons_outline:upload"></mat-icon>
+			</div>
+			<div class="mt-2">
+				<h3>Drag and drop Pdf file here</h3>
+			</div>
+			<div class="mt-2">
+				<h3>or</h3>
+			</div>
+			<div class="mt-2" >
+				<label for="fileDropRef" >Browse for file</label>
+			</div>
+			<div class="mt-2">
+				<p class = "font-bold note" >*Note: Please upload only pdf files </p>
+			</div>
+		</div>
+	</div>
+	<div class="m-3">
+		<fuse-alert
+			class="mt-8 -mb-4 w-full text-center"
+			*ngIf="showAlertPdf"
+			[appearance]="'outline'"
+			[showIcon]="false"
+			[type]="alert.type"
+			>
+			{{alert.message}}
+			<a class="ml-2" mat-icon-button (click)="cancelPdfError()" matTooltip="Cancel" class="justify-end">
+                <mat-icon class="cross-error-icon" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+            </a>
+		</fuse-alert>
+		<!-- [dismissible] = "true" -->
+	</div>
+	<div class="files-list">
+		<div class="single-file" *ngFor="let file of files; let i = index">
+			<div class="file-icon">
+				<mat-icon  class="doc-icon" svgIcon="heroicons_outline:document-text"></mat-icon>
+			</div>
+			<div class="info">
+				<h4 class="name">
+					{{ file?.name }}
+				</h4>
+				<p class="size">
+					{{ formatBytes(file?.size) }}
+				</p>
+				<!-- <app-progress-bar [progress]="file?.progress"> </app-progress-bar> -->
+			</div>
+	
+			<div class="delete display-none" (click)="deleteFilePdf(i)">
+				
+				<mat-icon class="delete-icon display-none" svgIcon="heroicons_outline:trash" ></mat-icon>
+	
+			</div>
+		</div>
+	</div>
+	<div class="flex flex-row justify-center p-6" >
+		
+		<button class="m-3" mat-stroked-button (click)="resetButton()" id="pdfResetBtn" [disabled] = "files.length==0">
+			<span class="ml-2 mr-1">Reset</span>
+		</button>
+		
+		<button class="m-3 button" mat-flat-button (click)="pdfUpload()" id="pdfUploadBtn" [disabled] = "files.length==0">
+			<span class="ml-2 mr-1" >Upload</span>
+		</button>
+	</div>
+</div>
+<!---------------------------------------------Success Msg---------------------------------------------------------------->
+<div *ngIf = "isPdfUploaded">
+	<!-- <p>Table Data</p> -->
+	
+	<table *ngIf="dataSource.data.length!=0" mat-table  matSort [dataSource]="dataSource">
+		<!-- FileName -->
+		<ng-container matColumnDef="fileName">
+		  <th mat-header-cell *matHeaderCellDef mat-sort-header>File Name </th>
+		  <td mat-cell *matCellDef="let element"> 
+			  <ng-container *ngIf="element.name != null else temp">
+				{{ element.name }} 
+			  </ng-container> 
+			  <ng-template #temp>
+				-
+			  </ng-template>  
+		  </td>
+		</ng-container>
+		<!-- Status -->
+		<ng-container matColumnDef="status">
+		  <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+		  <td mat-cell *matCellDef="let element"> 
+			completed
+		   </td>
+		</ng-container>
+		<!-- Icon -->
+		<ng-container matColumnDef="icon">
+		  <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+		  <td mat-cell *matCellDef="let element">
+			<ng-container > 
+				<mat-icon [matTooltip]="'Open Position'" svgIcon="heroicons_solid:check-circle" class="text-green-500"></mat-icon>
+			</ng-container>
+		  </td>
+		</ng-container>
+		<tr mat-header-row *matHeaderRowDef="displayedColumns" class="sticky top-0" ></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+	  </table>
+	  
+</div>

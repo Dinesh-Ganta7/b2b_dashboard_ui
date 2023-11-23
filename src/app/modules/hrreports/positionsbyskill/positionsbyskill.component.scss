@@ -1,0 +1,23 @@
+table{
+    width: 100%;
+}
+td, th {
+
+    text-align: left !important;
+    vertical-align: middle !important;
+}
+th{ 
+    color: white !important;
+    font-size:13px;
+     background-color: #1e293b;
+   }
+  
+   ::ng-deep .mat-focused{
+    border-color: #1e293b;
+   }
+  
+
+   ::ng-deep .search-bar{
+    margin-top: -116px;
+    margin-right: 200px;
+   }

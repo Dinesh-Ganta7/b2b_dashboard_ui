@@ -1,0 +1,83 @@
+<div class="flex flex-col mt-2 flex-auto min-w-0">
+  <div
+  class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pl-6 pr-6 sm:px-10 dark:bg-transparent">
+    <div class="flex-1 min-w-0">
+    <!-- Title -->
+      <div class="mt-2 mb-2">
+      <h2
+        class="font-medium tracking-tight text-secondary"
+      >
+        Position By Skill 
+      </h2>
+      </div>
+    </div>
+  <div class="max-w-full search-bar">
+  <mat-form-field class="flex justify-end full-width" appearance="outline">
+    <mat-label>Search</mat-label>
+    <input [formControl]="searchControl" matInput [type]="'text'" (input)="applyFilter()" />
+
+        <!-- <input [formControl]="overallFilter" matInput [type]="'overallSearch'"/> -->
+    <!-- <mat-icon class="ml-5" [svgIcon]="'heroicons_outline:search'"></mat-icon> -->
+  </mat-form-field>
+  </div>
+</div>
+ 
+  <div class="flex-auto pb-3 pl-6 pr-6 sm:pl-10 sm:pr-10">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+        <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- skillSet Column -->
+        <ng-container matColumnDef="position">
+          <th colspan="999" mat-header-cell *matHeaderCellDef class="">Primary Skill</th>
+          <td colspan="999" mat-cell *matCellDef="let element" class="pl-9">
+            {{ element.skillSet }}
+          </td>
+        </ng-container>
+
+        <!-- position Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>No of Positions</th>
+          <td colspan="999" mat-cell *matCellDef="let element" class="p-2">
+            {{ element.position }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- SkillGroup header -->
+        <ng-container matColumnDef="groupHeader">
+          <td colspan="999" mat-cell *matCellDef="let groupBy" >
+            <strong>{{ groupBy.skillGroup }}</strong>
+          </td>
+        </ng-container>
+
+        <!-- PositionCount header -->
+        <ng-container matColumnDef="positionsCount">
+          <td colspan="999" mat-cell *matCellDef="let groupBy" class="p-2">
+            <strong>{{ groupBy.positionCount }}</strong>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-row
+          *matRowDef="
+            let row;
+            columns: ['groupHeader', 'positionsCount'];
+            when: isGroup
+          "
+        ></tr>
+      </table>
+      <mat-paginator #paginator
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 20]">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

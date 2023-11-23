@@ -1,0 +1,125 @@
+<div class="flex flex-col justify-center p-6">
+    <div>
+      <h2
+        class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 font-sans"
+      >
+        Excel Uploads
+      </h2>
+    </div>
+    <div class="flex-auto pb-3 pl-6 pr-6 sm:pl-10 sm:pr-10">
+      <div class="max-w-full prose prose-sm">
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="fileDataList">
+            <!-- File Name Column -->
+            <ng-container matColumnDef="filename">
+              <th mat-header-cell *matHeaderCellDef>File Name</th>
+              <td mat-cell *matCellDef="let data">{{ data.name }}</td>
+            </ng-container>
+  
+            <!-- Uploads Column -->
+            <ng-container matColumnDef="uploads">
+              <th mat-header-cell *matHeaderCellDef>Uploads</th>
+              <td mat-cell *matCellDef="let data">
+                <div class="grid grid-cols-1 pl-4 pr-4 gap-4">
+                  <div class="flex flex-col">
+                    <div class="pl-6 pr-6">
+                      <input
+                        type="file"
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        class="file-input"
+                        (change)="onFileSelected($event, data)"
+                        #fileUpload
+                      />
+                      <div class="flex">
+                        <div class="flex flex-col">
+                          <p
+                            class="p-2 border-solid rounded-lg min-h-10 min-w-56 border-gray-400 border-2 ml-3 mr-3"
+                            [matTooltip]="data.filename"
+                          >
+                            {{ data.filename || "" | truncate : 15 }}
+                          </p>
+                        
+                          <p
+                            [hideElement]="hide"
+                            class="text-red-800"
+                            *ngIf="bidInfoError && data.name == 'Bid Info'"
+                          >
+                            {{ onchangeErrorMessage }}
+                          </p>
+                          <p
+                            [hideElement]="hide"
+                            class="text-red-800"
+                            *ngIf="
+                              declineReportError &&
+                              data.name == 'Candidate Decline Report'
+                            "
+                          >
+                            {{ onchangeErrorMessage }}
+                          </p>
+                          <p
+                            [hideElement]="hide"
+                            class="text-red-800"
+                            *ngIf="
+                              submissionReportError &&
+                              data.name == 'Candidate Submission Report'
+                            "
+                          >
+                            {{ onchangeErrorMessage }}
+                          </p>
+                        </div>
+                        <div class="flex flex-row justify-center">
+                          <button
+                            mat-icon-button
+                            class="rounded-full mt-2"
+                            (click)="fileUpload.click()"
+                          >
+                            <mat-icon
+                              [svgIcon]="'heroicons_solid:upload'"
+                            ></mat-icon>
+                          </button>
+                          <button
+                            mat-icon-button
+                            class="rounded-full ml-4 mt-2"
+                            (click)="removeButton(data)"
+                          >
+                            <mat-icon [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+  
+            <!-- The table will render two header rows, one data row per data object, and two footer rows. -->
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns"
+              class="example-first-header-row"
+            ></tr>
+  
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-row justify-center p-6">
+      <button
+        (click)="resetButton()"
+        mat-button
+        class="bg-neutral-400 max-w-56 self-center text-white rounded-full mr-4"
+      >
+        Reset
+      </button>
+      <button
+        (click)="onUpload()"
+        mat-button
+        id="upload"
+        class="bg-neutral-400 max-w-56 self-center text-white rounded-full"
+      >
+        Upload
+      </button>
+    </div>
+  </div>
+  

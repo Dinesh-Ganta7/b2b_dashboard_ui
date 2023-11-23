@@ -1,0 +1,9 @@
+ ::ng-deep .no-padding {
+    padding: 0 !important;
+}
+
+::ng-deep .mat-form-field-wrapper{
+    padding-bottom: 0px;
+    background-color: #ffffff;
+    border-radius: 8px;
+}
